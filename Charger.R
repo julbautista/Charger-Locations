@@ -13,12 +13,14 @@ ggplot(df,aes(rem, use)) + jbplot  +
   xlab("Distance from Nearest Major City") + ylab("Usage Rate by Owners in Nearest City") +
   geom_point(size = 1.9, alpha = 0.7) +
   geom_smooth(method= 'lm', alpha = 0.2)
+ggsave("ols.pdf")
 
 #initial look with loess
 ggplot(df,aes(rem, use)) + jbplot  +
   xlab("Distance from Nearest Major City") + ylab("Usage Rate by Owners in Nearest City") +
   geom_point(size = 1.9, alpha = 0.7) +
   geom_smooth(method ='loess', alpha = 0.2)
+ggsave("loess.pdf")
 
 #initial look with convex hull to create shape around the instance space
 ggplot(df,aes(rem, use)) + jbplot +
@@ -26,13 +28,13 @@ ggplot(df,aes(rem, use)) + jbplot +
   geom_polygon(data = df[chull(df$rem,df$use),], fill = "light blue", alpha = 0.2) + 
   geom_point(size = 1.9, alpha = 0.7) +
   geom_smooth(method= 'loess', alpha = 0)
-  
+ggsave("hull.pdf")
 
 #fit stan model
-stanc("6a.stan")$status
-fit <- stan("6a.stan",
+stanc("Charger.stan")$status
+fit <- stan("Charger.stan",
             data = c("rem","use"),
-            iter = 1000, chains = 3)
+            iter = 2000, chains = 4)
 beep(1)
 
 #create new dataframe
@@ -57,6 +59,7 @@ ggplot(df) + jbplot +
   geom_ribbon(aes(x = rem, ymin = lowbound, ymax = upbound), alpha = 0.14) +
   geom_line(aes(x = rem, y = use_est), size = 0.75) + 
   geom_point(aes(rem,use), size = 1.9, alpha = 0.7)
+ggsave("teslamodel.pdf")
 
 #pinpointing greatest distance where 5% usage is near certain
 ggplot(df) + jbplot + 
@@ -70,3 +73,4 @@ ggplot(df) + jbplot +
   geom_vline(xintercept = 53) +
   geom_point(aes(x = 53, y = 0.05), colour = jbpal$red, size = 2.4) +
   geom_text(aes(x = 38, y = 0.03), label = "5% Min Usage Rate", colour = jbpal$brown, size = 2.5)
+ggsave("fivepercent.pdf")
