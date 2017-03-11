@@ -59,7 +59,7 @@ ggplot(df) + public + ggtitle("Beta Distribution Model") +
   geom_ribbon(aes(x = rem, ymin = lowbound, ymax = upbound), alpha = 0.14) +
   geom_line(aes(x = rem, y = use_est), size = 0.85) + 
   geom_point(aes(rem,use), size = 1.9, alpha = 0.7)
-ggsave("teslamodel.pdf", width = 17, height = 8.5)
+ggsave("betamodel.pdf", width = 17, height = 8.5)
 
 #pinpointing greatest distance where 5% usage is near certain
 ggplot(df) + ggtitle("Find Minimum Distance to Achieve 5% Usage Rate") + public +
